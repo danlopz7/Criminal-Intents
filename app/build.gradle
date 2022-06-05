@@ -1,0 +1,101 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.dlopez.criminalintent"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                ]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "some/path/goes/here/")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    debugImplementation "androidx.fragment:fragment-testing:1.4.1"
+
+    //para ViewModel
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    //me permite recuperar el viewModel con un delegado para activities
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
+    //me permite recuperar el viewmodel con un delegado para fragments
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+
+    //RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    //Room Library
+    /**
+     * Room API containing all the classes and
+     annotations you will need to define your database
+     */
+    implementation "androidx.room:room-runtime:2.4.2"
+    /**
+     * room-compiler, is for
+     the Room compiler, which will generate your database implementation based on the annotations you
+     specify. The compiler uses the kapt keyword, instead of implementation, so that the generated classes
+     from the compiler are visible to Android Studio, thanks to the kotlin-kapt plug-in.
+     */
+    kapt 'androidx.room:room-compiler:2.4.2'
+    /**
+     * room-ktx, adds Kotlin-specific
+     functionality and support for coroutines.
+     (Room can implement DAO functions as suspending functions. Now, you can asynchronously call these functions within a coroutine)
+     */
+    implementation 'androidx.room:room-ktx:2.4.2'
+
+    //Coroutines Libraries
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+}
