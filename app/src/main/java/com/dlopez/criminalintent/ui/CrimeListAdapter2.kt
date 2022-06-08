@@ -3,21 +3,18 @@ package com.dlopez.criminalintent.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.ListItemCrimeBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-//adapter provides a crimeID
-class CrimeListAdapter(
-    private val crimes: List<Crime>,
-    //this variable should hold a function. "variableName : functionType definition () -> Unit"
-    //function parameter " () " and return type " -> Unit "
-    private val onCrimeClicked: (crimeId: UUID) -> Unit
-) : RecyclerView.Adapter<CrimeListAdapter.CrimeHolder>() {
+class CrimeListAdapter2(val onCrimeClicked: (crimeId: UUID) -> Unit) :
+    ListAdapter<Crime, CrimeListAdapter2.CrimeHolder2>(DiffCallback) {
 
-    class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CrimeHolder2(val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit) {
             //
@@ -40,22 +37,23 @@ class CrimeListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder2 {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
-        return CrimeHolder(binding)
+        return CrimeHolder2(binding)
     }
 
-    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
-        val crime = crimes[position]
-        holder.bind(crime, onCrimeClicked)
+    override fun onBindViewHolder(holder: CrimeHolder2, position: Int) {
+        val currentItem = getItem(position)
+        holder.bind(currentItem, onCrimeClicked)
     }
 
-    override fun getItemCount() = crimes.size
+    companion object DiffCallback : DiffUtil.ItemCallback<Crime>() {
+        override fun areItemsTheSame(oldItem: Crime, newItem: Crime): Boolean {
+            return oldItem.id == newItem.id
+        }
+        override fun areContentsTheSame(oldItem: Crime, newItem: Crime): Boolean {
+            return oldItem.title == newItem.title
+        }
+    }
 }
-
-//RecyclerView expects an itemView to be wrapped in an instance of ViewHolder
-//A ViewHolder stores a reference to an item's view
-
-//A recyclerView creates ViewHolders, which brings their itemViews along**
-//A recyclerView asks the adapter to create a new ViewHolder

@@ -1,9 +1,8 @@
 package com.dlopez.criminalintent.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import com.dlopez.criminalintent.Crime
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
@@ -18,4 +17,8 @@ interface CrimeDao {
     @Query("SELECT * FROM crime WHERE id=(:id)")
     suspend fun getCrime(id: UUID): Crime
     //fun getCrime(id: UUID): Crime?
+
+    //suspend modifier so that you can call it from a coroutine scope
+    @Update
+    suspend fun updateCrime(crime: Crime)
 }

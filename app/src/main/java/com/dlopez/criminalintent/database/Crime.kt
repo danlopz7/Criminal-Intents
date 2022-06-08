@@ -1,7 +1,8 @@
-package com.dlopez.criminalintent
+package com.dlopez.criminalintent.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.versionedparcelable.VersionedParcelize
 import java.util.UUID
 import java.util.Date
 
