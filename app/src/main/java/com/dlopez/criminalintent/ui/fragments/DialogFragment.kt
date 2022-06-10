@@ -33,13 +33,14 @@ class DialogFragment: DialogFragment(), DatePickerDialog.OnDateSetListener,
 
         getDateTimeCalendar()
         DatePickerDialog(requireContext(), this, initialYear, initialMonth, initialDay).show()
-        TimePickerDialog(requireContext(), this, initialHour, initialMinute, false).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         savedYear = year
         savedMonth = month
         savedDay = dayOfMonth
+
+        TimePickerDialog(requireContext(), this, initialHour, initialMinute, false).show()
 
         //getDateTimeCalendar()
     }

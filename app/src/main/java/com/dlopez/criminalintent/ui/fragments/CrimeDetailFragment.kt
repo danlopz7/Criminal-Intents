@@ -120,8 +120,8 @@ class CrimeDetailFragment : Fragment() {
             //EEEE MMM dd, yyyy || yyyy-MM-dd hh:mm:ss a = 2012-12-15 12:00:00 AM || EEE, d MMM yyyy HH:mm:ss = Wed, 4 Jul 2001 12:08:56
             //crime.date.toString()
             btnCrimeDate.setOnClickListener {
-                //findNavController().navigate(CrimeDetailFragmentDirections.showDialogs(crime.date))
-                findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
+                findNavController().navigate(CrimeDetailFragmentDirections.showDialogs(crime.date))
+                //findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
             }
 
             btnCrimeTime.setOnClickListener {
