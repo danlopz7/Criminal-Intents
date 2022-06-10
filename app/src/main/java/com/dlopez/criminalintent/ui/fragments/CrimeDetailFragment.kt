@@ -87,7 +87,7 @@ class CrimeDetailFragment : Fragment() {
             }
         }
 
-        /*setFragmentResultListener(DatePickerFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
+        setFragmentResultListener(DatePickerFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
             val newDate = bundle.getSerializable(DatePickerFragment.BUNDLE_KEY_DATE) as Date
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
@@ -99,14 +99,14 @@ class CrimeDetailFragment : Fragment() {
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
             }
-        }*/
+        }
 
-        setFragmentResultListener(DialogFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
+        /*setFragmentResultListener(DialogFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
             val newDate = bundle.getSerializable(DialogFragment.BUNDLE_KEY_DATE) as Date
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
             }
-        }
+        }*/
     }
 
     private fun updateUI(crime: Crime) {
@@ -120,16 +120,16 @@ class CrimeDetailFragment : Fragment() {
             //EEEE MMM dd, yyyy || yyyy-MM-dd hh:mm:ss a = 2012-12-15 12:00:00 AM || EEE, d MMM yyyy HH:mm:ss = Wed, 4 Jul 2001 12:08:56
             //crime.date.toString()
             btnCrimeDate.setOnClickListener {
-                findNavController().navigate(CrimeDetailFragmentDirections.showDialogs(crime.date))
-                //findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
+                //findNavController().navigate(CrimeDetailFragmentDirections.showDialogs(crime.date))
+                findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
             }
 
-            /*btnCrimeTime.setOnClickListener {
-                *//*val timePicker = TimePickerFragment {
-                }
-                timePicker.show(FragmentTransaction, "ss")*//*
+            btnCrimeTime.setOnClickListener {
                 findNavController().navigate(CrimeDetailFragmentDirections.selectTime(crime.date))
-            }*/
+                /*val timePicker = TimePickerFragment {
+                }
+                timePicker.show(FragmentTransaction, "ss")*/
+            }
 
             checkboxCrimeSolved.isChecked = crime.isSolved
         }

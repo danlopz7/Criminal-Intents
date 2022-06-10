@@ -12,7 +12,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import java.util.*
 
-class DialogFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener,
+class DialogFragment: DialogFragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
     private val args: DialogFragmentArgs by navArgs()
@@ -33,6 +33,7 @@ class DialogFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener,
 
         getDateTimeCalendar()
         DatePickerDialog(requireContext(), this, initialYear, initialMonth, initialDay).show()
+        TimePickerDialog(requireContext(), this, initialHour, initialMinute, false).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -41,9 +42,6 @@ class DialogFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener,
         savedDay = dayOfMonth
 
         //getDateTimeCalendar()
-        TimePickerDialog(requireContext(), this, initialHour, initialMinute, false).show()
-
-
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
