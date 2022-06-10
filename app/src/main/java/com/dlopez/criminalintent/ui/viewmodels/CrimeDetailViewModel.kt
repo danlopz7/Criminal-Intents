@@ -34,8 +34,10 @@ class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
     // and the CrimeDetailFragment update it. This will allow you to safely expose the crime as StateFlow
     fun updateCrime(onUpdate: (Crime) -> Crime) {
         _crime.update { oldCrime: Crime? ->
-            oldCrime?.let {
-                onUpdate(it)
+            oldCrime?.let { oldCrimeToFragmentAndReconverted: Crime ->
+                //gets the copy of the crime in CrimeDetailFragment, bc implements the lambda there and returns a crime
+                //so it replaces the old crime by the updated crime right here
+                onUpdate(oldCrimeToFragmentAndReconverted)
             }
         }
     }

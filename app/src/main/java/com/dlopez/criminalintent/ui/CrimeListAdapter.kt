@@ -6,25 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.ListItemCrimeBinding
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 //adapter provides a crimeID
 class CrimeListAdapter(
     private val crimes: List<Crime>,
-    //this variable should hold a function. "variableName : functionType definition () -> Unit"
-    //function parameter " () " and return type " -> Unit "
-    private val onCrimeClicked: (crimeId: UUID) -> Unit
+    // this variable should hold a function. variableName : functionType definition " () -> Unit "
+    // function parameter " () " and return type " -> Unit "
+    private var onCrimeClicked: (crimeId: UUID) -> Unit
 ) : RecyclerView.Adapter<CrimeListAdapter.CrimeHolder>() {
 
     class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit) {
-            //
             binding.crimeTitle.text = crime.title
-            binding.crimeDate.text =
-                SimpleDateFormat("EEEE, MMM dd, yyyy.", Locale.US).format(crime.date)
-
+            binding.crimeDate.text = SimpleDateFormat("EEE, d MMM yyyy", Locale.US).format(crime.date)
+            //DateFormat.getDateInstance().format(crime.date)
+            //"EEEE, MMM dd, yyyy."
             binding.root.setOnClickListener {
                 //passing this crime Id back to CrimeListFragment
                 //this is the lambda expression that is invoked when the user presses the root view

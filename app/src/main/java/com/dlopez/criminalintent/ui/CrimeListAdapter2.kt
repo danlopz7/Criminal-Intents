@@ -11,6 +11,7 @@ import com.dlopez.criminalintent.databinding.ListItemCrimeBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
+//difference here is we implement ListAdapter.. not used by now
 class CrimeListAdapter2(val onCrimeClicked: (crimeId: UUID) -> Unit) :
     ListAdapter<Crime, CrimeListAdapter2.CrimeHolder2>(DiffCallback) {
 
@@ -57,3 +58,48 @@ class CrimeListAdapter2(val onCrimeClicked: (crimeId: UUID) -> Unit) :
         }
     }
 }
+
+
+//changing lambda expression to CrimeHolder class instead of binding function inside crimeHolder
+/*class CrimeListAdapter(
+    private val crimes: List<Crime>,
+    //this variable should hold a function. "variableName : functionType definition () -> Unit"
+    //function parameter " () " and return type " -> Unit "
+    private var onCrimeClicked: (crimeId: UUID) -> Unit
+) : RecyclerView.Adapter<CrimeListAdapter.CrimeHolder>() {
+
+    class CrimeHolder(private val binding: ListItemCrimeBinding,  private var onCrimeClicked: (crimeId: UUID) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(crime: Crime) {
+            binding.crimeTitle.text = crime.title
+            binding.crimeDate.text = SimpleDateFormat("EEE, d MMM yyyy", Locale.US).format(crime.date)
+            //DateFormat.getDateInstance().format(crime.date)
+            //"EEEE, MMM dd, yyyy."
+            binding.root.setOnClickListener {
+                //passing this crime Id back to CrimeListFragment
+                //this is the lambda expression that is invoked when the user presses the root view
+                //passing in the id from the crime
+                onCrimeClicked(crime.id)
+            }
+
+            binding.crimeSolved.visibility = if (crime.isSolved) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
+        return CrimeHolder(binding, onCrimeClicked)
+    }
+
+    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
+        val crime = crimes[position]
+        holder.bind(crime)
+    }
+
+    override fun getItemCount() = crimes.size
+}*/
