@@ -12,16 +12,13 @@ import java.util.*
 
 private const val TAG = "DatePickerFragment"
 
-//DialogFragment’s responsibility is to manage the dialog you want to display.
 class DatePickerFragment : DialogFragment() {
-    //TimePickerDialog.OnTimeSetListener
 
     private val args: DatePickerFragmentArgs by navArgs()
     var initialYear = 0
     var initialMonth = 0
     var initialDay = 0
 
-    //override this lifecycle function to build a DatePickerDialog initialized with the current date
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         getDateTimeCalendar()
@@ -56,9 +53,4 @@ class DatePickerFragment : DialogFragment() {
         const val REQUEST_KEY_DATE = "REQUEST_KEY_DATE"
         const val BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE"
     }
-
-    /* override fun onDateSet(picker: DatePicker?, year: Int, month: Int, day: Int) {
-         val resultDate = GregorianCalendar(year, month, day).time
-         setFragmentResult(REQUEST_KEY_DATE, bundleOf(BUNDLE_KEY_DATE to resultDate))
-     }*/
 }

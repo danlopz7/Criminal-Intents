@@ -2,9 +2,7 @@ package com.dlopez.criminalintent.ui.fragments
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
-import android.text.format.Time
 import android.widget.TimePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -14,9 +12,7 @@ import java.util.*
 
 private const val TAG = "TimePickerFragment"
 
-class TimePickerFragment() : DialogFragment()
-   // TimePickerDialog.OnTimeSetListener
-{
+class TimePickerFragment : DialogFragment() {
 
     private val args: TimePickerFragmentArgs by navArgs()
 
@@ -33,8 +29,7 @@ class TimePickerFragment() : DialogFragment()
         val timeListener =
             TimePickerDialog.OnTimeSetListener { _: TimePicker, hour: Int, minute: Int ->
                 val date = GregorianCalendar(year, month, day, hour, minute).time
-                //listener("$hour:$minute")
-                setFragmentResult(REQUEST_KEY_DATE, bundleOf(BUNDLE_KEY_DATE to date))
+                setFragmentResult(REQUEST_KEY_DATE2, bundleOf(BUNDLE_KEY_DATE2 to date))
             }
 
         return TimePickerDialog(
@@ -44,20 +39,10 @@ class TimePickerFragment() : DialogFragment()
             initialMinute,
             false
         )
-
-        /*val dialog = TimePickerDialog(activity as Context, this, initialHour, initialMinute, false)
-        return dialog*/
     }
 
     companion object {
-        const val REQUEST_KEY_DATE = "REQUEST_KEY_DATE"
-        const val BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE"
+        const val REQUEST_KEY_DATE2 = "REQUEST_KEY_DATE2"
+        const val BUNDLE_KEY_DATE2 = "BUNDLE_KEY_DATE2"
     }
-
-    //1 create a listener
-    /*override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        listener("$hourOfDay:$minute")
-        setFragmentResult(REQUEST_KEY_DATE, bundleOf(BUNDLE_KEY_DATE to listener))
-        //val resultTime = GregorianCalendar(hourOfDay, minute)
-    }*/
 }

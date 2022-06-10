@@ -1,11 +1,14 @@
 package com.dlopez.criminalintent.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,9 +18,9 @@ import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.FragmentCrimeBinding
 import com.dlopez.criminalintent.ui.viewmodels.CrimeDetailViewModel
 import com.dlopez.criminalintent.ui.viewmodels.CrimeDetailViewModelFactory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,21 +95,24 @@ class CrimeDetailFragment : Fragment() {
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
             }
+            navigateToTimePickerDialog(newDate)
         }
 
-        setFragmentResultListener(TimePickerFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
-            val newDate = bundle.getSerializable(TimePickerFragment.BUNDLE_KEY_DATE) as Date
+        setFragmentResultListener(TimePickerFragment.REQUEST_KEY_DATE2) { requestKey, bundle ->
+            val newDate = bundle.getSerializable(TimePickerFragment.BUNDLE_KEY_DATE2) as Date
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
             }
         }
+    }
 
-        /*setFragmentResultListener(DialogFragment.REQUEST_KEY_DATE) { requestKey, bundle ->
-            val newDate = bundle.getSerializable(DialogFragment.BUNDLE_KEY_DATE) as Date
-            crimeDetailViewModel.updateCrime {
-                it.copy(date = newDate)
-            }
-        }*/
+    private fun navigateToTimePickerDialog(newDate: Date){
+        Log.d(TAG, "onNavigateToTimePickerDialog")
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(50)
+            findNavController().navigate(CrimeDetailFragmentDirections.selectTime(newDate))
+        }
+
     }
 
     private fun updateUI(crime: Crime) {
@@ -116,19 +122,13 @@ class CrimeDetailFragment : Fragment() {
             }
             btnCrimeDate.text = SimpleDateFormat("EEE, d MMM yyyy HH:mm a", Locale.US).format(crime.date)
             btnCrimeTime.text = SimpleDateFormat("K:mm a, z", Locale.US).format(crime.date)
-            //DateFormat.getDateInstance().format(crime.date)
-            //EEEE MMM dd, yyyy || yyyy-MM-dd hh:mm:ss a = 2012-12-15 12:00:00 AM || EEE, d MMM yyyy HH:mm:ss = Wed, 4 Jul 2001 12:08:56
-            //crime.date.toString()
+
             btnCrimeDate.setOnClickListener {
-                findNavController().navigate(CrimeDetailFragmentDirections.showDialogs(crime.date))
-                //findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
+                findNavController().navigate(CrimeDetailFragmentDirections.selectDate(crime.date))
             }
 
             btnCrimeTime.setOnClickListener {
                 findNavController().navigate(CrimeDetailFragmentDirections.selectTime(crime.date))
-                /*val timePicker = TimePickerFragment {
-                }
-                timePicker.show(FragmentTransaction, "ss")*/
             }
 
             checkboxCrimeSolved.isChecked = crime.isSolved
