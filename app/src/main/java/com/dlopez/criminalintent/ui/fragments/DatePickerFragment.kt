@@ -18,6 +18,8 @@ class DatePickerFragment : DialogFragment() {
     var initialYear = 0
     var initialMonth = 0
     var initialDay = 0
+    var initialHour = 0
+    var initialMinute = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -25,7 +27,7 @@ class DatePickerFragment : DialogFragment() {
 
         val dateListener =
             DatePickerDialog.OnDateSetListener { _: DatePicker, year: Int, month: Int, day: Int ->
-                val resultDate = GregorianCalendar(year, month, day).time
+                val resultDate = GregorianCalendar(year, month, day, initialHour, initialMinute).time
                 setFragmentResult(REQUEST_KEY_DATE, bundleOf(BUNDLE_KEY_DATE to resultDate))
             }
 
@@ -46,6 +48,8 @@ class DatePickerFragment : DialogFragment() {
         initialYear = calendar.get(Calendar.YEAR)
         initialMonth = calendar.get(Calendar.MONTH)
         initialDay = calendar.get(Calendar.DAY_OF_MONTH)
+        initialHour = calendar.get(Calendar.HOUR)
+        initialMinute = calendar.get(Calendar.MINUTE)
 
     }
 

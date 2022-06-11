@@ -43,10 +43,6 @@ class CrimeDetailFragment : Fragment() {
         CrimeDetailViewModelFactory(args.crimeId)
     }
 
-    /*private val crimeDetailViewModel by viewModels<CrimeDetailViewModel> {
-        CrimeDetailViewModelFactory(args.crimeId)
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,7 +72,6 @@ class CrimeDetailFragment : Fragment() {
                 crimeDetailViewModel.updateCrime { oldCrime: Crime ->
                     oldCrime.copy(isSolved = isChecked)
                 }
-                //crime = crime.copy(isSolved = isChecked)
             }
         }
 
@@ -95,7 +90,10 @@ class CrimeDetailFragment : Fragment() {
             crimeDetailViewModel.updateCrime {
                 it.copy(date = newDate)
             }
-            navigateToTimePickerDialog(newDate)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(50)
+                navigateToTimePickerDialog(newDate)
+            }
         }
 
         setFragmentResultListener(TimePickerFragment.REQUEST_KEY_DATE2) { requestKey, bundle ->
@@ -104,15 +102,6 @@ class CrimeDetailFragment : Fragment() {
                 it.copy(date = newDate)
             }
         }
-    }
-
-    private fun navigateToTimePickerDialog(newDate: Date){
-        Log.d(TAG, "onNavigateToTimePickerDialog")
-        viewLifecycleOwner.lifecycleScope.launch {
-            delay(50)
-            findNavController().navigate(CrimeDetailFragmentDirections.selectTime(newDate))
-        }
-
     }
 
     private fun updateUI(crime: Crime) {
@@ -128,11 +117,16 @@ class CrimeDetailFragment : Fragment() {
             }
 
             btnCrimeTime.setOnClickListener {
-                findNavController().navigate(CrimeDetailFragmentDirections.selectTime(crime.date))
+                navigateToTimePickerDialog(crime.date)
             }
 
             checkboxCrimeSolved.isChecked = crime.isSolved
         }
+    }
+
+    private fun navigateToTimePickerDialog(newDate: Date){
+        Log.d(TAG, "onNavigateToTimePickerDialog")
+        findNavController().navigate(CrimeDetailFragmentDirections.selectTime(newDate))
     }
 
     override fun onDestroyView() {
