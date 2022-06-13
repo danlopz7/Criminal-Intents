@@ -9,6 +9,7 @@ import java.util.Date
 /**
  * annotating your model class to make it a database entity
  */
+
 @Entity
 data class Crime(@PrimaryKey val id: UUID,
                  var title: String,

@@ -1,9 +1,7 @@
 package com.dlopez.criminalintent.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dlopez.criminalintent.R
 import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.FragmentCrimeListBinding
 import com.dlopez.criminalintent.ui.CrimeListAdapter
@@ -31,6 +30,11 @@ class CrimeListFragment : Fragment() {
         }
 
     private val crimeListViewModel by viewModels<CrimeListViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,11 +62,9 @@ class CrimeListFragment : Fragment() {
 
     private fun updateUI(crimes: List<Crime>) {
         adapter = CrimeListAdapter(crimes) { crimeId: UUID ->
-            //it: UUID
             findNavController().navigate(
                 CrimeListFragmentDirections.showCrimeDetail(crimeId)
             )
-            //R.id.action_crimeListFragment_to_crimeDetailFragment)
         }
         binding.crimeRecyclerView.adapter = adapter
     }
@@ -70,6 +72,34 @@ class CrimeListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_crime_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_crime -> {
+                showNewCrime()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showNewCrime() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val newCrime = Crime(
+                id = UUID.randomUUID(),
+                title = "",
+                date = Date(),
+                isSolved = false
+            )
+            crimeListViewModel.addCrime(newCrime)
+            findNavController().navigate(CrimeListFragmentDirections.showCrimeDetail(newCrime.id))
+        }
     }
 
     companion object {

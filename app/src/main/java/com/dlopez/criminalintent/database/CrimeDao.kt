@@ -1,6 +1,7 @@
 package com.dlopez.criminalintent.database
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,7 @@ interface CrimeDao {
     //suspend modifier so that you can call it from a coroutine scope
     @Update
     suspend fun updateCrime(crime: Crime)
+
+    @Insert
+    suspend fun addCrime(crime: Crime)
 }

@@ -22,7 +22,8 @@ class CrimeListAdapter(
 
         fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit) {
             binding.crimeTitle.text = crime.title
-            binding.crimeDate.text = SimpleDateFormat("EEE, d MMM yyyy", Locale.US).format(crime.date)
+            binding.crimeDate.text = crime.date.toString()
+            //SimpleDateFormat("EEE, d MMM yyyy", Locale.US).format(crime.date)
             //DateFormat.getDateInstance().format(crime.date)
             //"EEEE, MMM dd, yyyy."
             binding.root.setOnClickListener {

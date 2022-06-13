@@ -7,6 +7,7 @@ import com.dlopez.criminalintent.database.CrimeDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 import java.util.*
@@ -25,8 +26,8 @@ class CrimeRepository private constructor(
         context.applicationContext,
         CrimeDatabase::class.java,
         DATABASE_NAME
-    ).createFromAsset(DATABASE_NAME)
-        .build()
+    ).build()
+    //createFromAsset(DATABASE_NAME)
 
     //==========================================================
 
@@ -34,8 +35,13 @@ class CrimeRepository private constructor(
     //inyeccion de dependencias necesita
     private val crimeDao = database.crimeDao()
 
-
     //suspend fun getCrimes(): List<Crime> = crimeDao.getCrimes()
+    fun getCrimes2(): Flow<List<Crime>> {
+        return flow {
+            crimeDao.getCrimes()
+        }
+    }
+
     fun getCrimes(): Flow<List<Crime>> = crimeDao.getCrimes()
     suspend fun getCrime(id: UUID): Crime = crimeDao.getCrime(id)
 
@@ -45,6 +51,8 @@ class CrimeRepository private constructor(
             crimeDao.updateCrime(crime)
         }
     }
+
+    suspend fun addCrime(crime: Crime) = crimeDao.addCrime(crime)
 
 
     companion object {
