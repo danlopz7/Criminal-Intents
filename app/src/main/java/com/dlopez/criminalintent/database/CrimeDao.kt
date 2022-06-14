@@ -1,9 +1,6 @@
 package com.dlopez.criminalintent.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
@@ -25,4 +22,13 @@ interface CrimeDao {
 
     @Insert
     suspend fun addCrime(crime: Crime)
+
+    /*@Delete(entity = Crime::class)
+    suspend fun deleteCrime(crimeId: UUID)*/
+
+    @Query("DELETE FROM crime WHERE id=(:crimeId)")
+    suspend fun deleteCrime(crimeId: UUID)
+
+    @Delete
+    suspend fun deleteCrime2(crime: Crime)
 }

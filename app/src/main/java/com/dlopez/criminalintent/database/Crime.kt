@@ -1,20 +1,20 @@
 package com.dlopez.criminalintent.database
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.versionedparcelable.VersionedParcelize
-import java.util.UUID
-import java.util.Date
+import kotlinx.parcelize.Parcelize
+import java.util.*
 
 /**
  * annotating your model class to make it a database entity
  */
-
+@Parcelize
 @Entity
 data class Crime(@PrimaryKey val id: UUID,
                  var title: String,
                  var date: Date,
-                 var isSolved: Boolean)
+                 var isSolved: Boolean) : Parcelable
 
 /**
  * UUID is a utility class included in the Android framework. It provides an easy way to generate

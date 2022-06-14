@@ -42,6 +42,8 @@ class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
         }
     }
 
+    suspend fun deleteCrime2(crime: Crime) = crimeRepository.deleteCrime2(crime)
+
     //perfect place to save changes to the crime
     //access the latest value from the crime StateFlow and save it to the database
     override fun onCleared() {
@@ -65,3 +67,12 @@ class CrimeDetailViewModelFactory(
         return CrimeDetailViewModel(crimeId) as T
     }
 }
+
+/*
+class CrimeDetailViewModelFactory(
+    private val crime: Crime
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return CrimeDetailViewModel(crime) as T
+    }
+}*/

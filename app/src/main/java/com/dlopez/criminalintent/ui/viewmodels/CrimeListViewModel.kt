@@ -15,9 +15,10 @@ class CrimeListViewModel : ViewModel() {
     private val crimeRepository = CrimeRepository.get()
 
     //StateFlow class does a good job of providing consumers with the freshest data.
-    //private val _crimes: MutableStateFlow<List<Crime>> = MutableStateFlow(null)
     private val _crimes: MutableStateFlow<List<Crime>> = MutableStateFlow(emptyList())
+    //expose the state of the detail screen as a StateFlow holding a crime
     val crimes: StateFlow<List<Crime>>
+        //Represents this mutable state flow as a read-only state flow.
         get() = _crimes.asStateFlow()
 
     init {
@@ -25,7 +26,7 @@ class CrimeListViewModel : ViewModel() {
         //you need a coroutineScope when trying to read from the stream of values within the Flow
         //to access the values within the Flow, you must observe it using the collect function, which
         //is a suspending function, so it needs to be called within a coroutine scope.
-        viewModelScope.launch{
+        viewModelScope.launch {
             crimeRepository.getCrimes().collect {
                 _crimes.value = it
             }
@@ -33,6 +34,7 @@ class CrimeListViewModel : ViewModel() {
     }
 
     suspend fun addCrime(crime: Crime) = crimeRepository.addCrime(crime)
+
 
     /* suspend fun loadCrimes(): List<Crime> {
          return crimeRepository.getCrimes()

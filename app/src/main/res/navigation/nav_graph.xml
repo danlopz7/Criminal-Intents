@@ -13,13 +13,22 @@
         <!--action id can be renamed-->
         <action
             android:id="@+id/show_Crime_Detail"
-            app:destination="@id/crimeDetailFragment" />
+            app:destination="@id/crimeDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/crimeDetailFragment"
         android:name="com.dlopez.criminalintent.ui.fragments.CrimeDetailFragment"
         android:label="CrimeDetailFragment"
         tools:layout="@layout/fragment_crime">
+        <action
+            android:id="@+id/return_to_ListFragment"
+            app:destination="@id/crimeListFragment"
+            app:enterAnim="@anim/slide_out_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <argument
             android:name="crimeId"
             app:argType="java.util.UUID" />
@@ -29,6 +38,7 @@
         <action
             android:id="@+id/select_time"
             app:destination="@id/timePickerFragment" />
+
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"

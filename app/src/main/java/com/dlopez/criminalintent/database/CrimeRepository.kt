@@ -53,6 +53,9 @@ class CrimeRepository private constructor(
     }
 
     suspend fun addCrime(crime: Crime) = crimeDao.addCrime(crime)
+    suspend fun deleteCrime(id: UUID) = crimeDao.deleteCrime(id)
+
+    suspend fun deleteCrime2(crime: Crime) = crimeDao.deleteCrime2(crime)
 
 
     companion object {

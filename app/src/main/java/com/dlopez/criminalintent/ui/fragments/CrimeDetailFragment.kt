@@ -1,10 +1,9 @@
 package com.dlopez.criminalintent.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -14,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.dlopez.criminalintent.R
 import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.FragmentCrimeBinding
 import com.dlopez.criminalintent.ui.viewmodels.CrimeDetailViewModel
@@ -41,6 +41,13 @@ class CrimeDetailFragment : Fragment() {
 
     private val crimeDetailViewModel: CrimeDetailViewModel by viewModels {
         CrimeDetailViewModelFactory(args.crimeId)
+    }
+
+    lateinit var currentCrime: Crime
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -127,6 +134,38 @@ class CrimeDetailFragment : Fragment() {
     private fun navigateToTimePickerDialog(newDate: Date){
         Log.d(TAG, "onNavigateToTimePickerDialog")
         findNavController().navigate(CrimeDetailFragmentDirections.selectTime(newDate))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_crime_detail, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.delete_crime -> {
+                deleteCrime()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun deleteCrime(){
+        crimeDetailViewModel.crime.value?.let {
+            currentCrime = it
+        }
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes"){_, _ ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                crimeDetailViewModel.deleteCrime2(currentCrime)
+            }
+            findNavController().navigate(CrimeDetailFragmentDirections.returnToListFragment())
+        }
+        builder.setNegativeButton("No"){_, _ -> }
+        builder.setTitle("Delete ${currentCrime.title}?")
+        builder.setMessage("Are you sure you want to delete the current crime?")
+        builder.create().show()
     }
 
     override fun onDestroyView() {

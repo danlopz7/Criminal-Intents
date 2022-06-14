@@ -42,7 +42,6 @@ class CrimeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCrimeListBinding.inflate(inflater, container, false)
-
         binding.crimeRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.crimeRecyclerView.adapter = adapter
         return binding.root
@@ -67,6 +66,13 @@ class CrimeListFragment : Fragment() {
             )
         }
         binding.crimeRecyclerView.adapter = adapter
+        if (crimeListViewModel.crimes.value.isEmpty()) {
+            binding.crimeRecyclerView.visibility = View.GONE
+            binding.emptyView.visibility = View.VISIBLE
+        } else {
+            binding.crimeRecyclerView.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {
@@ -74,11 +80,15 @@ class CrimeListFragment : Fragment() {
         _binding = null
     }
 
+    //function callback responsible for creating the menu
+    //its not invoked automatically, you explicitly tell the system that this fragment should receive
+    //a call to this function by setting setHasOptionMenu(hasMenu: Boolean) function in onCreate()
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_crime_list, menu)
     }
 
+    //function callback to respond to the selection of an action item
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.new_crime -> {
@@ -109,15 +119,15 @@ class CrimeListFragment : Fragment() {
     }
 
 
-    /*private fun updateUI2(crimes: List<Crime>) {
-        var adapter2 = binding.crimeRecyclerView.adapter as CrimeListAdapter2
-        adapter2.submitList(crimes)
-        adapter2.onCrimeClicked()
+/*private fun updateUI2(crimes: List<Crime>) {
+    var adapter2 = binding.crimeRecyclerView.adapter as CrimeListAdapter2
+    adapter2.submitList(crimes)
+    adapter2.onCrimeClicked()
 
-        adapter2 = CrimeListAdapter2 {
-            findNavController().navigate(
-                CrimeListFragmentDirections.ShowCrimeDetail(it)
-            )
-        }
-    }*/
+    adapter2 = CrimeListAdapter2 {
+        findNavController().navigate(
+            CrimeListFragmentDirections.ShowCrimeDetail(it)
+        )
+    }
+}*/
 }

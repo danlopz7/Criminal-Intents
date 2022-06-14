@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.databinding.ListItemCrimeBinding
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 //adapter provides a crimeID
@@ -15,7 +13,8 @@ class CrimeListAdapter(
     private val crimes: List<Crime>,
     // this variable should hold a function. variableName : functionType definition " () -> Unit "
     // function parameter " () " and return type " -> Unit "
-    private var onCrimeClicked: (crimeId: UUID) -> Unit
+    private var onCrimeClicked: (crimeId: UUID) -> Unit,
+    //private var onLongClicked2: (crime: Crime) -> Unit
 ) : RecyclerView.Adapter<CrimeListAdapter.CrimeHolder>() {
 
     class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
