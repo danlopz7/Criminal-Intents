@@ -6,6 +6,7 @@ import com.dlopez.criminalintent.database.Crime
 import com.dlopez.criminalintent.database.CrimeRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "CrimeListViewModel"
 
@@ -34,6 +35,7 @@ class CrimeListViewModel : ViewModel() {
     }
 
     suspend fun addCrime(crime: Crime) = crimeRepository.addCrime(crime)
+    suspend fun deleteCrime(crimeId: UUID) = crimeRepository.deleteCrime(crimeId)
 
 
     /* suspend fun loadCrimes(): List<Crime> {

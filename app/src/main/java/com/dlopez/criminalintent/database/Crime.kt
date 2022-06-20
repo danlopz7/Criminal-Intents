@@ -11,10 +11,13 @@ import java.util.*
  */
 @Parcelize
 @Entity
-data class Crime(@PrimaryKey val id: UUID,
-                 var title: String,
-                 var date: Date,
-                 var isSolved: Boolean) : Parcelable
+data class Crime(
+    @PrimaryKey val id: UUID,
+    val title: String,
+    val date: Date,
+    val isSolved: Boolean,
+    val suspect: String = ""
+) : Parcelable
 
 /**
  * UUID is a utility class included in the Android framework. It provides an easy way to generate

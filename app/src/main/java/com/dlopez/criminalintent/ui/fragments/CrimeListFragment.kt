@@ -60,10 +60,15 @@ class CrimeListFragment : Fragment() {
     }
 
     private fun updateUI(crimes: List<Crime>) {
-        adapter = CrimeListAdapter(crimes) { crimeId: UUID ->
+        adapter = CrimeListAdapter(crimes) { crimeId: UUID, number: Int->
+            if(number == 1)
             findNavController().navigate(
                 CrimeListFragmentDirections.showCrimeDetail(crimeId)
-            )
+            ) else{
+                viewLifecycleOwner.lifecycleScope.launch {
+                    crimeListViewModel.deleteCrime(crimeId)
+                }
+            }
         }
         binding.crimeRecyclerView.adapter = adapter
         if (crimeListViewModel.crimes.value.isEmpty()) {

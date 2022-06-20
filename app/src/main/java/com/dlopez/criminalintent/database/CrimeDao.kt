@@ -23,12 +23,12 @@ interface CrimeDao {
     @Insert
     suspend fun addCrime(crime: Crime)
 
-    /*@Delete(entity = Crime::class)
-    suspend fun deleteCrime(crimeId: UUID)*/
+    @Delete
+    suspend fun deleteCrime2(crime: Crime)
 
     @Query("DELETE FROM crime WHERE id=(:crimeId)")
     suspend fun deleteCrime(crimeId: UUID)
 
-    @Delete
-    suspend fun deleteCrime2(crime: Crime)
+    /*@Delete(entity = Crime::class)
+    suspend fun deleteCrime(crimeId: UUID)*/
 }

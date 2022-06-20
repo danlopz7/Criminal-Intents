@@ -13,13 +13,13 @@ class CrimeListAdapter(
     private val crimes: List<Crime>,
     // this variable should hold a function. variableName : functionType definition " () -> Unit "
     // function parameter " () " and return type " -> Unit "
-    private var onCrimeClicked: (crimeId: UUID) -> Unit,
+    private var onCrimeClicked: (crimeId: UUID, number: Int) -> Unit,
     //private var onLongClicked2: (crime: Crime) -> Unit
 ) : RecyclerView.Adapter<CrimeListAdapter.CrimeHolder>() {
 
     class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit) {
+        fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID, number: Int) -> Unit) {
             binding.crimeTitle.text = crime.title
             binding.crimeDate.text = crime.date.toString()
             //SimpleDateFormat("EEE, d MMM yyyy", Locale.US).format(crime.date)
@@ -29,8 +29,12 @@ class CrimeListAdapter(
                 //passing this crime Id back to CrimeListFragment
                 //this is the lambda expression that is invoked when the user presses the root view
                 //passing in the id from the crime
-                onCrimeClicked(crime.id)
+                onCrimeClicked(crime.id, 1)
             }
+            /*binding.deleteCrime.setOnClickListener {
+                onCrimeClicked(crime.id, 2)
+                bindingAdapter?.notifyItemRemoved(bindingAdapterPosition)
+            }*/
 
             binding.crimeSolved.visibility = if (crime.isSolved) {
                 View.VISIBLE
